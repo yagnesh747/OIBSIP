@@ -1,0 +1,3 @@
+transactionId,accountId,type,amount,balanceBefore,balanceAfter,timestamp,description
+TXN000001,ACC001,BALANCE_INQUIRY,0.0,50000.0,50000.0,2026-07-30T23:11:09.634663900,Balance inquiry
+TXN000002,ACC001,PIN_CHANGE,0.0,50000.0,50000.0,2026-07-30T23:11:53.576247100,PIN changed successfully

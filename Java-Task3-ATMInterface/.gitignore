@@ -1,0 +1,25 @@
+# Compiled Class Files
+*.class
+bin/
+out/
+target/
+
+# Log & Output Files
+logs/
+receipts/
+*.log
+
+# Persistence files (Optional if keeping defaults local)
+# data/*.csv
+
+# IDE specific files
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# OS Generated Files
+.DS_Store
+Thumbs.db

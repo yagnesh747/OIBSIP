@@ -1,0 +1,24 @@
+# Root gitignore for OIBSIP repository
+
+# Compiled Class Files
+*.class
+bin/
+out/
+target/
+
+# Logs & Output Receipts
+logs/
+receipts/
+*.log
+
+# IDE specific files
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# System Files
+.DS_Store
+Thumbs.db

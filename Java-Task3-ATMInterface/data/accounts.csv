@@ -1,0 +1,4 @@
+accountId,userId,hashedPin,holderName,balance
+ACC003,USR003,8cce10345c5e1de90d277b9869465f5972b828afbbbfd7ef08b1d835eedee993,Rahul Kumar,75000.0
+ACC001,USR001,74e5927a9ac148915bbfea9b0e1e0ea4a6558abe1513b00104c2b8b8543ffdaf,Yagnesh Patel,50000.0
+ACC002,USR002,f8638b979b2f4f793ddb6dbd197e0ee25a7a6ea32b0ae22f5e3c5d119d839e75,Priya Sharma,125000.0

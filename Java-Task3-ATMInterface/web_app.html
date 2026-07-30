@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Bank ATM — Enterprise Web Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --accent-blue: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.4);
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --input-bg: #090d16;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .atm-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 30px var(--accent-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .brand-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-header p {
+            color: var(--text-sub);
+            font-size: 0.875rem;
+            margin-top: 4px;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid var(--card-border);
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            margin-top: 15px;
+        }
+
+        .grid-menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .menu-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .menu-card:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: var(--accent-blue);
+            transform: translateY(-3px);
+        }
+
+        .menu-card .icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .menu-card span {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.05));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .balance-amount {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin: 8px 0;
+        }
+
+        .presets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .preset-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 10px;
+            color: var(--text-main);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .history-list {
+            max-height: 260px;
+            overflow-y: auto;
+            border-radius: 12px;
+            background: var(--input-bg);
+            padding: 10px;
+            border: 1px solid var(--card-border);
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .credit { color: var(--accent-green); font-weight: 600; }
+        .debit { color: var(--accent-red); font-weight: 600; }
+
+        .alert {
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6ee7b7;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<div class="atm-container">
+    <div class="brand-header">
+        <h1>🏦 SECURE BANK ATM</h1>
+        <p>Enterprise Banking System</p>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="screen-login" class="screen active">
+        <div class="form-group">
+            <label>User ID</label>
+            <input type="text" id="login-userid" placeholder="e.g. USR001" value="USR001">
+        </div>
+        <div class="form-group">
+            <label>PIN (4-6 Digits)</label>
+            <input type="password" id="login-pin" placeholder="••••" value="1234">
+        </div>
+        <button class="btn btn-primary" onclick="handleLogin()">Login to Account</button>
+        <div id="login-alert" class="alert alert-error"></div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="screen-dashboard" class="screen">
+        <div class="balance-card">
+            <span style="font-size: 0.85rem; color: var(--text-sub);">Active Account</span>
+            <div id="dash-name" style="font-weight: 600; font-size: 1.1rem; margin-top: 4px;">—</div>
+            <div id="dash-account" style="font-size: 0.8rem; color: var(--text-sub);">—</div>
+        </div>
+        <div class="grid-menu">
+            <div class="menu-card" onclick="showScreen('screen-balance')">
+                <div class="icon">💳</div>
+                <span>Balance</span>
+            </div>
+            <div class="menu-card" onclick="showScreen('screen-withdraw')">
+                <div class="icon">🏧</div>
+                <span>Withdraw</span>
+            </div>
+            <div class="menu-card" onclick="showScreen('screen-deposit')">
+                <div class="icon">💵</div>
+                <span>Deposit</span>
+            </div>
+            <div class="menu-card" onclick="showScreen('screen-transfer')">
+                <div class="icon">💸</div>
+                <span>Transfer</span>
+            </div>
+            <div class="menu-card" onclick="showScreen('screen-history')">
+                <div class="icon">📜</div>
+                <span>History</span>
+            </div>
+            <div class="menu-card" onclick="showScreen('screen-pin')">
+                <div class="icon">🔑</div>
+                <span>Change PIN</span>
+            </div>
+        </div>
+        <button class="btn btn-danger" onclick="logout()">End Session / Logout</button>
+    </div>
+
+    <!-- Balance Screen -->
+    <div id="screen-balance" class="screen">
+        <div class="balance-card">
+            <span>Available Balance</span>
+            <div class="balance-amount" id="balance-display">₹0.00</div>
+            <span id="balance-acc" style="font-size: 0.8rem; color: var(--text-sub);">Account: ---</span>
+        </div>
+        <button class="btn btn-secondary" onclick="showScreen('screen-dashboard')">← Back to Dashboard</button>
+    </div>
+
+    <!-- Withdraw Screen -->
+    <div id="screen-withdraw" class="screen">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h3 style="font-size: 1.2rem;">Cash Withdrawal</h3>
+            <p style="font-size: 0.85rem; color: var(--text-sub);" id="withdraw-bal">Balance: ₹0</p>
+        </div>
+        <div class="presets">
+            <button class="preset-btn" onclick="setWithdrawAmt(500)">₹500</button>
+            <button class="preset-btn" onclick="setWithdrawAmt(1000)">₹1,000</button>
+            <button class="preset-btn" onclick="setWithdrawAmt(2000)">₹2,000</button>
+            <button class="preset-btn" onclick="setWithdrawAmt(5000)">₹5,000</button>
+        </div>
+        <div class="form-group">
+            <label>Custom Amount (Multiples of ₹100)</label>
+            <input type="number" id="withdraw-amt" placeholder="Enter amount">
+        </div>
+        <button class="btn btn-primary" onclick="handleWithdraw()">Confirm Withdrawal</button>
+        <button class="btn btn-secondary" onclick="showScreen('screen-dashboard')">Cancel</button>
+        <div id="withdraw-alert" class="alert"></div>
+    </div>
+
+    <!-- Deposit Screen -->
+    <div id="screen-deposit" class="screen">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h3 style="font-size: 1.2rem;">Cash Deposit</h3>
+            <p style="font-size: 0.85rem; color: var(--text-sub);" id="deposit-bal">Balance: ₹0</p>
+        </div>
+        <div class="form-group">
+            <label>Deposit Amount</label>
+            <input type="number" id="deposit-amt" placeholder="Minimum ₹100">
+        </div>
+        <button class="btn btn-primary" onclick="handleDeposit()">Confirm Deposit</button>
+        <button class="btn btn-secondary" onclick="showScreen('screen-dashboard')">Cancel</button>
+        <div id="deposit-alert" class="alert"></div>
+    </div>
+
+    <!-- Transfer Screen -->
+    <div id="screen-transfer" class="screen">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h3 style="font-size: 1.2rem;">Fund Transfer</h3>
+            <p style="font-size: 0.85rem; color: var(--text-sub);" id="transfer-bal">Balance: ₹0</p>
+        </div>
+        <div class="form-group">
+            <label>Recipient Account ID</label>
+            <input type="text" id="transfer-recipient" placeholder="e.g. ACC002">
+        </div>
+        <div class="form-group">
+            <label>Transfer Amount</label>
+            <input type="number" id="transfer-amt" placeholder="Enter amount">
+        </div>
+        <button class="btn btn-primary" onclick="handleTransfer()">Execute Transfer</button>
+        <button class="btn btn-secondary" onclick="showScreen('screen-dashboard')">Cancel</button>
+        <div id="transfer-alert" class="alert"></div>
+    </div>
+
+    <!-- History Screen -->
+    <div id="screen-history" class="screen">
+        <h3 style="font-size: 1.2rem; margin-bottom: 15px; text-align: center;">Transaction History</h3>
+        <div class="history-list" id="history-items">
+            <!-- Dynamic items -->
+        </div>
+        <button class="btn btn-secondary" onclick="showScreen('screen-dashboard')">← Back to Dashboard</button>
+    </div>
+
+    <!-- Change PIN Screen -->
+    <div id="screen-pin" class="screen">
+        <h3 style="font-size: 1.2rem; margin-bottom: 20px; text-align: center;">Change Security PIN</h3>
+        <div class="form-group">
+            <label>Current PIN</label>
+            <input type="password" id="pin-old" placeholder="••••">
+        </div>
+        <div class="form-group">
+            <label>New PIN (4-6 digits)</label>
+            <input type="password" id="pin-new" placeholder="••••">
+        </div>
+        <button class="btn btn-primary" onclick="handlePinChange()">Update PIN</button>
+        <button class="btn btn-secondary" onclick="showScreen('screen-dashboard')">Cancel</button>
+        <div id="pin-alert" class="alert"></div>
+    </div>
+
+</div>
+
+<script>
+    // State Store
+    const accounts = {
+        'USR001': { id: 'ACC001', name: 'Yagnesh Patel', pin: '1234', balance: 50000, locked: false, attempts: 0 },
+        'USR002': { id: 'ACC002', name: 'Priya Sharma', pin: '5678', balance: 125000, locked: false, attempts: 0 },
+        'USR003': { id: 'ACC003', name: 'Rahul Kumar', pin: '9012', balance: 75000, locked: false, attempts: 0 }
+    };
+
+    const transactions = {
+        'ACC001': [{ date: new Date().toLocaleString(), type: 'Initial Deposit', amount: 50000, isCredit: true, bal: 50000 }],
+        'ACC002': [{ date: new Date().toLocaleString(), type: 'Initial Deposit', amount: 125000, isCredit: true, bal: 125000 }],
+        'ACC003': [{ date: new Date().toLocaleString(), type: 'Initial Deposit', amount: 75000, isCredit: true, bal: 75000 }]
+    };
+
+    let currentUser = null;
+
+    function formatINR(num) {
+        return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(num);
+    }
+
+    function showScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+
+        if (currentUser) {
+            document.getElementById('dash-name').innerText = currentUser.name;
+            document.getElementById('dash-account').innerText = `ID: ${currentUser.id} | User: ${currentUser.userId}`;
+            document.getElementById('balance-display').innerText = formatINR(currentUser.balance);
+            document.getElementById('balance-acc').innerText = `Account: ${currentUser.id}`;
+            document.getElementById('withdraw-bal').innerText = `Available: ${formatINR(currentUser.balance)}`;
+            document.getElementById('deposit-bal').innerText = `Available: ${formatINR(currentUser.balance)}`;
+            document.getElementById('transfer-bal').innerText = `Available: ${formatINR(currentUser.balance)}`;
+            renderHistory();
+        }
+    }
+
+    function handleLogin() {
+        const uid = document.getElementById('login-userid').value.trim().toUpperCase();
+        const pin = document.getElementById('login-pin').value.trim();
+        const alert = document.getElementById('login-alert');
+
+        alert.style.display = 'none';
+
+        if (!accounts[uid]) {
+            showAlert(alert, 'Invalid User ID or PIN.', 'error');
+            return;
+        }
+
+        const acc = accounts[uid];
+        if (acc.locked) {
+            showAlert(alert, 'Account locked due to 3 failed PIN attempts.', 'error');
+            return;
+        }
+
+        if (acc.pin !== pin) {
+            acc.attempts++;
+            if (acc.attempts >= 3) {
+                acc.locked = true;
+                showAlert(alert, 'Invalid PIN. Account has been LOCKED.', 'error');
+            } else {
+                showAlert(alert, `Invalid PIN. ${3 - acc.attempts} attempt(s) remaining.`, 'error');
+            }
+            return;
+        }
+
+        acc.attempts = 0;
+        currentUser = { ...acc, userId: uid };
+        showScreen('screen-dashboard');
+    }
+
+    function logout() {
+        currentUser = null;
+        document.getElementById('login-pin').value = '';
+        showScreen('screen-login');
+    }
+
+    function setWithdrawAmt(amt) {
+        document.getElementById('withdraw-amt').value = amt;
+    }
+
+    function handleWithdraw() {
+        const amt = parseFloat(document.getElementById('withdraw-amt').value);
+        const alert = document.getElementById('withdraw-alert');
+
+        if (isNaN(amt) || amt <= 0) {
+            showAlert(alert, 'Enter a valid positive amount.', 'error');
+            return;
+        }
+        if (amt % 100 !== 0) {
+            showAlert(alert, 'Amount must be a multiple of ₹100.', 'error');
+            return;
+        }
+        if (amt > currentUser.balance - 500) {
+            showAlert(alert, 'Insufficient funds. (Minimum ₹500 balance required)', 'error');
+            return;
+        }
+
+        currentUser.balance -= amt;
+        accounts[currentUser.userId].balance = currentUser.balance;
+
+        transactions[currentUser.id].unshift({
+            date: new Date().toLocaleString(),
+            type: 'Withdrawal',
+            amount: amt,
+            isCredit: false,
+            bal: currentUser.balance
+        });
+
+        showAlert(alert, `Successfully withdrew ${formatINR(amt)}!`, 'success');
+        setTimeout(() => {
+            document.getElementById('withdraw-amt').value = '';
+            alert.style.display = 'none';
+            showScreen('screen-dashboard');
+        }, 1200);
+    }
+
+    function handleDeposit() {
+        const amt = parseFloat(document.getElementById('deposit-amt').value);
+        const alert = document.getElementById('deposit-alert');
+
+        if (isNaN(amt) || amt <= 0) {
+            showAlert(alert, 'Enter a valid positive amount.', 'error');
+            return;
+        }
+
+        currentUser.balance += amt;
+        accounts[currentUser.userId].balance = currentUser.balance;
+
+        transactions[currentUser.id].unshift({
+            date: new Date().toLocaleString(),
+            type: 'Deposit',
+            amount: amt,
+            isCredit: true,
+            bal: currentUser.balance
+        });
+
+        showAlert(alert, `Successfully deposited ${formatINR(amt)}!`, 'success');
+        setTimeout(() => {
+            document.getElementById('deposit-amt').value = '';
+            alert.style.display = 'none';
+            showScreen('screen-dashboard');
+        }, 1200);
+    }
+
+    function handleTransfer() {
+        const recipientId = document.getElementById('transfer-recipient').value.trim().toUpperCase();
+        const amt = parseFloat(document.getElementById('transfer-amt').value);
+        const alert = document.getElementById('transfer-alert');
+
+        let targetAccKey = Object.keys(accounts).find(k => accounts[k].id === recipientId);
+
+        if (!targetAccKey) {
+            showAlert(alert, `Recipient Account ${recipientId} not found.`, 'error');
+            return;
+        }
+        if (recipientId === currentUser.id) {
+            showAlert(alert, 'Cannot transfer to your own account.', 'error');
+            return;
+        }
+        if (isNaN(amt) || amt <= 0) {
+            showAlert(alert, 'Enter a valid positive transfer amount.', 'error');
+            return;
+        }
+        if (amt > currentUser.balance - 500) {
+            showAlert(alert, 'Insufficient balance.', 'error');
+            return;
+        }
+
+        currentUser.balance -= amt;
+        accounts[currentUser.userId].balance = currentUser.balance;
+        accounts[targetAccKey].balance += amt;
+
+        transactions[currentUser.id].unshift({
+            date: new Date().toLocaleString(),
+            type: `Transfer to ${recipientId}`,
+            amount: amt,
+            isCredit: false,
+            bal: currentUser.balance
+        });
+
+        transactions[recipientId].unshift({
+            date: new Date().toLocaleString(),
+            type: `Transfer from ${currentUser.id}`,
+            amount: amt,
+            isCredit: true,
+            bal: accounts[targetAccKey].balance
+        });
+
+        showAlert(alert, `Transferred ${formatINR(amt)} to ${recipientId}!`, 'success');
+        setTimeout(() => {
+            document.getElementById('transfer-recipient').value = '';
+            document.getElementById('transfer-amt').value = '';
+            alert.style.display = 'none';
+            showScreen('screen-dashboard');
+        }, 1200);
+    }
+
+    function handlePinChange() {
+        const oldP = document.getElementById('pin-old').value.trim();
+        const newP = document.getElementById('pin-new').value.trim();
+        const alert = document.getElementById('pin-alert');
+
+        if (oldP !== currentUser.pin) {
+            showAlert(alert, 'Current PIN is incorrect.', 'error');
+            return;
+        }
+        if (!/^\d{4,6}$/.test(newP)) {
+            showAlert(alert, 'New PIN must be 4-6 digits.', 'error');
+            return;
+        }
+
+        currentUser.pin = newP;
+        accounts[currentUser.userId].pin = newP;
+
+        showAlert(alert, 'PIN updated successfully!', 'success');
+        setTimeout(() => {
+            document.getElementById('pin-old').value = '';
+            document.getElementById('pin-new').value = '';
+            alert.style.display = 'none';
+            showScreen('screen-dashboard');
+        }, 1200);
+    }
+
+    function renderHistory() {
+        const list = document.getElementById('history-items');
+        list.innerHTML = '';
+        const txns = transactions[currentUser.id] || [];
+
+        if (txns.length === 0) {
+            list.innerHTML = '<div style="text-align: center; color: var(--text-sub); padding: 20px;">No transactions yet.</div>';
+            return;
+        }
+
+        txns.forEach(t => {
+            const item = document.createElement('div');
+            item.className = 'history-item';
+            item.innerHTML = `
+                <div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">${t.type}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-sub);">${t.date}</div>
+                </div>
+                <div class="${t.isCredit ? 'credit' : 'debit'}">
+                    ${t.isCredit ? '+' : '-'}${formatINR(t.amount)}
+                </div>
+            `;
+            list.appendChild(item);
+        });
+    }
+
+    function showAlert(el, msg, type) {
+        el.innerText = msg;
+        el.className = `alert alert-${type}`;
+        el.style.display = 'block';
+    }
+</script>
+</body>
+</html>
