@@ -26,7 +26,7 @@ public class LoginPanel extends JPanel {
     public LoginPanel(ATMFrame parentFrame) {
         this.parentFrame = parentFrame;
         this.authService = new AuthenticationService();
-        setBackground(UIConstants.BG_PRIMARY);
+        setBackground(UIConstants.BG_MAIN);
         setLayout(new GridBagLayout());
 
         // Title

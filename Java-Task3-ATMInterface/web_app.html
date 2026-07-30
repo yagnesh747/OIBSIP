@@ -3,32 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Bank ATM — Enterprise Web Interface</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <title>Secure Bank ATM — Professional Banking Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --accent-blue: #3b82f6;
-            --accent-glow: rgba(59, 130, 246, 0.4);
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --text-main: #f8fafc;
-            --text-sub: #94a3b8;
-            --input-bg: #090d16;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --primary-dark: #1e293b;
+            --primary-slate: #334155;
+            --accent-amber: #d97706;
+            --accent-green: #16a34a;
+            --accent-red: #dc2626;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --input-bg: #f1f5f9;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Outfit', sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
 
         body {
-            background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%);
-            color: var(--text-main);
+            background-color: var(--bg-main);
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -40,85 +36,72 @@
             width: 100%;
             max-width: 480px;
             background: var(--card-bg);
-            backdrop-filter: blur(16px);
             border: 1px solid var(--card-border);
-            border-radius: 24px;
+            border-radius: 16px;
             padding: 32px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 30px var(--accent-glow);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
         }
 
         .brand-header {
             text-align: center;
             margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--card-border);
         }
 
         .brand-header h1 {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary-dark);
+            letter-spacing: -0.02em;
         }
 
         .brand-header p {
-            color: var(--text-sub);
+            color: var(--text-secondary);
             font-size: 0.875rem;
             margin-top: 4px;
         }
 
-        .screen {
-            display: none;
-            animation: fadeIn 0.3s ease-in-out;
-        }
+        .screen { display: none; }
+        .screen.active { display: block; }
 
-        .screen.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
 
         label {
             display: block;
             font-size: 0.85rem;
-            color: var(--text-sub);
+            font-weight: 600;
+            color: var(--primary-slate);
             margin-bottom: 8px;
         }
 
         input {
             width: 100%;
-            padding: 14px 18px;
+            padding: 12px 16px;
             background: var(--input-bg);
             border: 1px solid var(--card-border);
-            border-radius: 12px;
-            color: var(--text-main);
-            font-size: 1rem;
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
             outline: none;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
         }
 
         input:focus {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 0 3px var(--accent-glow);
+            border-color: var(--accent-amber);
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+            background: #ffffff;
         }
 
         .btn {
             width: 100%;
-            padding: 14px;
+            padding: 13px;
             border: none;
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -126,108 +109,84 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+            background: var(--primary-dark);
+            color: #ffffff;
         }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
-        }
+        .btn-primary:hover { background: #0f172a; }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-main);
+            background: var(--input-bg);
+            color: var(--primary-dark);
             border: 1px solid var(--card-border);
             margin-top: 10px;
         }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
+        .btn-secondary:hover { background: #e2e8f0; }
 
         .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-            margin-top: 15px;
+            background: var(--accent-red);
+            color: #ffffff;
+            margin-top: 16px;
         }
+        .btn-danger:hover { background: #b91c1c; }
 
         .grid-menu {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            gap: 12px;
             margin-bottom: 20px;
         }
 
         .menu-card {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 18px 12px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.25s;
+            transition: all 0.2s ease;
         }
 
         .menu-card:hover {
-            background: rgba(59, 130, 246, 0.15);
-            border-color: var(--accent-blue);
-            transform: translateY(-3px);
+            border-color: var(--accent-amber);
+            background: #fffbe6;
+            transform: translateY(-2px);
         }
 
-        .menu-card .icon {
-            font-size: 2rem;
-            margin-bottom: 8px;
-        }
-
-        .menu-card span {
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
+        .menu-card .icon { font-size: 1.75rem; margin-bottom: 6px; }
+        .menu-card span { font-size: 0.875rem; font-weight: 600; color: var(--primary-dark); }
 
         .balance-card {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.05));
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 16px;
-            padding: 24px;
+            background: #f8fafc;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .balance-amount {
-            font-size: 2.25rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--accent-green);
-            margin: 8px 0;
+            margin: 6px 0;
         }
 
-        .presets {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
+        .presets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
         .preset-btn {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--input-bg);
             border: 1px solid var(--card-border);
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 10px;
-            color: var(--text-main);
+            color: var(--primary-dark);
             font-weight: 600;
             cursor: pointer;
         }
-
-        .preset-btn:hover {
-            border-color: var(--accent-blue);
-            background: rgba(59, 130, 246, 0.1);
-        }
+        .preset-btn:hover { border-color: var(--accent-amber); background: #ffffff; }
 
         .history-list {
             max-height: 260px;
             overflow-y: auto;
-            border-radius: 12px;
+            border-radius: 10px;
             background: var(--input-bg);
             padding: 10px;
             border: 1px solid var(--card-border);
@@ -237,12 +196,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .history-item:last-child {
-            border-bottom: none;
+            padding: 10px;
+            border-bottom: 1px solid var(--card-border);
+            background: #ffffff;
+            margin-bottom: 6px;
+            border-radius: 6px;
         }
 
         .credit { color: var(--accent-green); font-weight: 600; }
@@ -250,24 +208,14 @@
 
         .alert {
             padding: 12px;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 0.85rem;
             text-align: center;
             margin-top: 15px;
             display: none;
         }
-
-        .alert-error {
-            background: rgba(239, 68, 68, 0.15);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .alert-success {
-            background: rgba(16, 185, 129, 0.15);
-            color: #6ee7b7;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
+        .alert-error { background: #fef2f2; color: var(--accent-red); border: 1px solid #fecaca; }
+        .alert-success { background: #f0fdf4; color: var(--accent-green); border: 1px solid #bbf7d0; }
     </style>
 </head>
 <body>
@@ -295,9 +243,9 @@
     <!-- Dashboard Screen -->
     <div id="screen-dashboard" class="screen">
         <div class="balance-card">
-            <span style="font-size: 0.85rem; color: var(--text-sub);">Active Account</span>
-            <div id="dash-name" style="font-weight: 600; font-size: 1.1rem; margin-top: 4px;">—</div>
-            <div id="dash-account" style="font-size: 0.8rem; color: var(--text-sub);">—</div>
+            <span style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 600;">Active Account</span>
+            <div id="dash-name" style="font-weight: 700; font-size: 1.15rem; color: var(--primary-dark); margin-top: 2px;">—</div>
+            <div id="dash-account" style="font-size: 0.85rem; color: var(--text-secondary);">—</div>
         </div>
         <div class="grid-menu">
             <div class="menu-card" onclick="showScreen('screen-balance')">
@@ -331,9 +279,9 @@
     <!-- Balance Screen -->
     <div id="screen-balance" class="screen">
         <div class="balance-card">
-            <span>Available Balance</span>
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">Available Balance</span>
             <div class="balance-amount" id="balance-display">₹0.00</div>
-            <span id="balance-acc" style="font-size: 0.8rem; color: var(--text-sub);">Account: ---</span>
+            <span id="balance-acc" style="font-size: 0.8rem; color: var(--text-secondary);">Account: ---</span>
         </div>
         <button class="btn btn-secondary" onclick="showScreen('screen-dashboard')">← Back to Dashboard</button>
     </div>
@@ -341,8 +289,8 @@
     <!-- Withdraw Screen -->
     <div id="screen-withdraw" class="screen">
         <div style="text-align: center; margin-bottom: 20px;">
-            <h3 style="font-size: 1.2rem;">Cash Withdrawal</h3>
-            <p style="font-size: 0.85rem; color: var(--text-sub);" id="withdraw-bal">Balance: ₹0</p>
+            <h3 style="font-size: 1.15rem; color: var(--primary-dark);">Cash Withdrawal</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);" id="withdraw-bal">Balance: ₹0</p>
         </div>
         <div class="presets">
             <button class="preset-btn" onclick="setWithdrawAmt(500)">₹500</button>
@@ -362,8 +310,8 @@
     <!-- Deposit Screen -->
     <div id="screen-deposit" class="screen">
         <div style="text-align: center; margin-bottom: 20px;">
-            <h3 style="font-size: 1.2rem;">Cash Deposit</h3>
-            <p style="font-size: 0.85rem; color: var(--text-sub);" id="deposit-bal">Balance: ₹0</p>
+            <h3 style="font-size: 1.15rem; color: var(--primary-dark);">Cash Deposit</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);" id="deposit-bal">Balance: ₹0</p>
         </div>
         <div class="form-group">
             <label>Deposit Amount</label>
@@ -377,8 +325,8 @@
     <!-- Transfer Screen -->
     <div id="screen-transfer" class="screen">
         <div style="text-align: center; margin-bottom: 20px;">
-            <h3 style="font-size: 1.2rem;">Fund Transfer</h3>
-            <p style="font-size: 0.85rem; color: var(--text-sub);" id="transfer-bal">Balance: ₹0</p>
+            <h3 style="font-size: 1.15rem; color: var(--primary-dark);">Fund Transfer</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);" id="transfer-bal">Balance: ₹0</p>
         </div>
         <div class="form-group">
             <label>Recipient Account ID</label>
@@ -395,16 +343,14 @@
 
     <!-- History Screen -->
     <div id="screen-history" class="screen">
-        <h3 style="font-size: 1.2rem; margin-bottom: 15px; text-align: center;">Transaction History</h3>
-        <div class="history-list" id="history-items">
-            <!-- Dynamic items -->
-        </div>
+        <h3 style="font-size: 1.15rem; color: var(--primary-dark); margin-bottom: 15px; text-align: center;">Transaction History</h3>
+        <div class="history-list" id="history-items"></div>
         <button class="btn btn-secondary" onclick="showScreen('screen-dashboard')">← Back to Dashboard</button>
     </div>
 
     <!-- Change PIN Screen -->
     <div id="screen-pin" class="screen">
-        <h3 style="font-size: 1.2rem; margin-bottom: 20px; text-align: center;">Change Security PIN</h3>
+        <h3 style="font-size: 1.15rem; color: var(--primary-dark); margin-bottom: 20px; text-align: center;">Change Security PIN</h3>
         <div class="form-group">
             <label>Current PIN</label>
             <input type="password" id="pin-old" placeholder="••••">
@@ -421,7 +367,6 @@
 </div>
 
 <script>
-    // State Store
     const accounts = {
         'USR001': { id: 'ACC001', name: 'Yagnesh Patel', pin: '1234', balance: 50000, locked: false, attempts: 0 },
         'USR002': { id: 'ACC002', name: 'Priya Sharma', pin: '5678', balance: 125000, locked: false, attempts: 0 },
@@ -649,7 +594,7 @@
         const txns = transactions[currentUser.id] || [];
 
         if (txns.length === 0) {
-            list.innerHTML = '<div style="text-align: center; color: var(--text-sub); padding: 20px;">No transactions yet.</div>';
+            list.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 20px;">No transactions yet.</div>';
             return;
         }
 
@@ -658,8 +603,8 @@
             item.className = 'history-item';
             item.innerHTML = `
                 <div>
-                    <div style="font-weight: 600; font-size: 0.9rem;">${t.type}</div>
-                    <div style="font-size: 0.75rem; color: var(--text-sub);">${t.date}</div>
+                    <div style="font-weight: 600; font-size: 0.875rem; color: var(--primary-dark);">${t.type}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">${t.date}</div>
                 </div>
                 <div class="${t.isCredit ? 'credit' : 'debit'}">
                     ${t.isCredit ? '+' : '-'}${formatINR(t.amount)}

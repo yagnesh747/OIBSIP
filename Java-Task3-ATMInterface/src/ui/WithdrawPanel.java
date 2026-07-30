@@ -30,7 +30,7 @@ public class WithdrawPanel extends JPanel {
         this.accountService = new AccountService();
         this.receiptService = new ReceiptService();
 
-        setBackground(UIConstants.BG_PRIMARY);
+        setBackground(UIConstants.BG_MAIN);
         setLayout(new BorderLayout(0, 15));
         setBorder(BorderFactory.createEmptyBorder(20, 25, 20, 25));
 

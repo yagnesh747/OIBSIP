@@ -3,40 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Number Guessing Game — Oasis Infobyte Task 2</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Number Guessing Game — Handcrafted Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
+        :root {
+            --bg-main: #fafaf9;
+            --card-bg: #ffffff;
+            --card-border: #e7e5e4;
+            --primary-green: #14532d;
+            --secondary-green: #166534;
+            --accent-orange: #f97316;
+            --accent-green: #15803d;
+            --accent-red: #dc2626;
+            --text-main: #1f2937;
+            --text-sub: #6b7280;
+            --input-bg: #f5f5f4;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; }
+
         body {
-            background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%);
-            color: #f8fafc;
+            background-color: var(--bg-main);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
+
         .card {
             width: 100%;
             max-width: 480px;
-            background: rgba(30, 41, 59, 0.75);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
             padding: 32px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
             text-align: center;
         }
-        h1 { font-size: 1.8rem; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        p { color: #94a3b8; font-size: 0.9rem; margin-top: 4px; }
+
+        h1 { font-size: 1.6rem; font-weight: 700; color: var(--primary-green); letter-spacing: -0.02em; }
+        p { color: var(--text-sub); font-size: 0.875rem; margin-top: 4px; }
+
         .diff-select { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
-        .diff-btn { flex: 1; padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; cursor: pointer; font-weight: 600; }
-        .diff-btn.active { background: #3b82f6; border-color: #60a5fa; }
+        .diff-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+            background: var(--input-bg);
+            color: var(--text-main);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+        .diff-btn.active { background: var(--primary-green); color: #ffffff; border-color: var(--primary-green); }
+
         .input-group { margin: 20px 0; }
-        input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: #090d16; color: white; font-size: 1.2rem; text-align: center; outline: none; }
-        .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: linear-gradient(135deg, #10b981, #059669); color: white; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 10px; }
-        .feedback { margin: 20px 0; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); font-weight: 600; min-height: 50px; }
-        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; font-size: 0.85rem; color: #94a3b8; text-align: left; }
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        input:focus { border-color: var(--accent-orange); background: #ffffff; }
+
+        .btn {
+            width: 100%;
+            padding: 13px;
+            border-radius: 10px;
+            border: none;
+            background: var(--accent-orange);
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s ease;
+        }
+        .btn:hover { background: #ea580c; }
+
+        .btn-sub {
+            background: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--card-border);
+        }
+        .btn-sub:hover { background: #e7e5e4; }
+
+        .feedback {
+            margin: 20px 0;
+            padding: 14px;
+            border-radius: 10px;
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            font-weight: 600;
+            font-size: 0.95rem;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--card-border);
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -55,14 +142,14 @@
     <div class="input-group">
         <input type="number" id="guess" placeholder="Enter your guess">
         <button class="btn" onclick="makeGuess()">Submit Guess</button>
-        <button class="btn" style="background: rgba(255,255,255,0.1);" onclick="newGame()">New Game</button>
+        <button class="btn btn-sub" onclick="newGame()">New Game</button>
     </div>
 
     <div class="stats">
-        <div>Played: <strong id="s-played" style="color:white">0</strong></div>
-        <div>Won: <strong id="s-won" style="color:#10b981">0</strong></div>
-        <div>High Score: <strong id="s-high" style="color:#f59e0b">0 pts</strong></div>
-        <div>Attempts Left: <strong id="s-left" style="color:#60a5fa">0</strong></div>
+        <div>Played: <strong id="s-played" style="color:var(--text-main)">0</strong></div>
+        <div>Won: <strong id="s-won" style="color:var(--accent-green)">0</strong></div>
+        <div>High Score: <strong id="s-high" style="color:var(--accent-orange)">0 pts</strong></div>
+        <div>Attempts Left: <strong id="s-left" style="color:var(--primary-green)">0</strong></div>
     </div>
 </div>
 
@@ -83,7 +170,7 @@
         remaining = cfg.att;
         active = true;
         document.getElementById('feedback').innerText = `Guess a number between ${cfg.min} and ${cfg.max}`;
-        document.getElementById('feedback').style.color = '#f8fafc';
+        document.getElementById('feedback').style.color = 'var(--text-main)';
         document.getElementById('s-left').innerText = remaining;
     }
 
@@ -101,15 +188,15 @@
             const score = Math.round((500 + remaining * 100) * cfg.mult);
             if (score > highScore) highScore = score;
             document.getElementById('feedback').innerText = `🏆 BINGO! Correct Number! Score: ${score} pts`;
-            document.getElementById('feedback').style.color = '#10b981';
+            document.getElementById('feedback').style.color = 'var(--accent-green)';
         } else if (remaining <= 0) {
             active = false; played++;
             document.getElementById('feedback').innerText = `❌ Game Over! The number was ${target}`;
-            document.getElementById('feedback').style.color = '#ef4444';
+            document.getElementById('feedback').style.color = 'var(--accent-red)';
         } else {
             const hint = g > target ? 'Too High! Try Lower' : 'Too Low! Try Higher';
             document.getElementById('feedback').innerText = `${hint} (${remaining} attempts left)`;
-            document.getElementById('feedback').style.color = '#f59e0b';
+            document.getElementById('feedback').style.color = 'var(--accent-orange)';
         }
 
         document.getElementById('s-played').innerText = played;

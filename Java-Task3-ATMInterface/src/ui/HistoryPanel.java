@@ -29,7 +29,7 @@ public class HistoryPanel extends JPanel {
         this.parentFrame = parentFrame;
         this.transactionService = new TransactionService();
 
-        setBackground(UIConstants.BG_PRIMARY);
+        setBackground(UIConstants.BG_MAIN);
         setLayout(new BorderLayout(0, 15));
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -51,13 +51,13 @@ public class HistoryPanel extends JPanel {
         };
 
         historyTable = new JTable(tableModel);
-        historyTable.setBackground(UIConstants.BG_SECONDARY);
+        historyTable.setBackground(UIConstants.BG_CARD);
         historyTable.setForeground(UIConstants.TEXT_PRIMARY);
         historyTable.setGridColor(UIConstants.BORDER_COLOR);
         historyTable.setFont(UIConstants.FONT_BODY);
         historyTable.setRowHeight(32);
         historyTable.getTableHeader().setFont(UIConstants.FONT_BODY_BOLD);
-        historyTable.getTableHeader().setBackground(UIConstants.BG_CARD);
+        historyTable.getTableHeader().setBackground(UIConstants.BG_INPUT);
         historyTable.getTableHeader().setForeground(UIConstants.TEXT_PRIMARY);
 
         // Custom Cell Renderer for Color-Coded Rows/Amounts
@@ -67,20 +67,20 @@ public class HistoryPanel extends JPanel {
                                                            boolean isSelected, boolean hasFocus,
                                                            int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                c.setBackground(row % 2 == 0 ? UIConstants.BG_SECONDARY : UIConstants.BG_CARD);
+                c.setBackground(row % 2 == 0 ? UIConstants.BG_CARD : UIConstants.BG_INPUT);
                 c.setForeground(UIConstants.TEXT_PRIMARY);
 
                 if (column == 2) { // Amount Column
                     String valStr = value != null ? value.toString() : "";
                     if (valStr.startsWith("+")) {
-                        c.setForeground(UIConstants.ACCENT_SUCCESS);
+                        c.setForeground(UIConstants.ACCENT_GREEN);
                     } else if (valStr.startsWith("-")) {
-                        c.setForeground(UIConstants.ACCENT_DANGER);
+                        c.setForeground(UIConstants.ACCENT_RED);
                     }
                 }
 
                 if (isSelected) {
-                    c.setBackground(UIConstants.BG_HOVER);
+                    c.setBackground(new Color(0xE2, 0xE8, 0xF0));
                 }
                 return c;
             }

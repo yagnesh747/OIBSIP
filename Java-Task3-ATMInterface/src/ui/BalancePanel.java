@@ -30,7 +30,7 @@ public class BalancePanel extends JPanel {
         this.accountService = new AccountService();
         this.transactionService = new TransactionService();
 
-        setBackground(UIConstants.BG_PRIMARY);
+        setBackground(UIConstants.BG_MAIN);
         setLayout(new BorderLayout(0, 15));
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -43,7 +43,7 @@ public class BalancePanel extends JPanel {
 
         balanceDisplayLabel = new JLabel("₹0.00", SwingConstants.CENTER);
         balanceDisplayLabel.setFont(UIConstants.FONT_BALANCE);
-        balanceDisplayLabel.setForeground(UIConstants.ACCENT_SUCCESS);
+        balanceDisplayLabel.setForeground(UIConstants.ACCENT_GREEN);
 
         JLabel subtext = UIConstants.createLabel("Available Funds");
         subtext.setHorizontalAlignment(SwingConstants.CENTER);
@@ -116,7 +116,7 @@ public class BalancePanel extends JPanel {
 
                 JLabel right = new JLabel(amtText);
                 right.setFont(UIConstants.FONT_SMALL);
-                right.setForeground(txn.getType().isCredit() ? UIConstants.ACCENT_SUCCESS : UIConstants.TEXT_PRIMARY);
+                right.setForeground(txn.getType().isCredit() ? UIConstants.ACCENT_GREEN : UIConstants.TEXT_PRIMARY);
 
                 row.add(left, BorderLayout.WEST);
                 row.add(right, BorderLayout.EAST);

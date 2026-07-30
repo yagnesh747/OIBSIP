@@ -26,7 +26,7 @@ public class ChangePinPanel extends JPanel {
         this.parentFrame = parentFrame;
         this.accountService = new AccountService();
 
-        setBackground(UIConstants.BG_PRIMARY);
+        setBackground(UIConstants.BG_MAIN);
         setLayout(new BorderLayout(0, 15));
         setBorder(BorderFactory.createEmptyBorder(20, 25, 20, 25));
 

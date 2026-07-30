@@ -29,11 +29,11 @@ public class ATMFrame extends JFrame {
         setSize(UIConstants.WINDOW_WIDTH, UIConstants.WINDOW_HEIGHT);
         setLocationRelativeTo(null);
         setResizable(false);
-        getContentPane().setBackground(UIConstants.BG_PRIMARY);
+        getContentPane().setBackground(UIConstants.BG_MAIN);
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-        cardPanel.setBackground(UIConstants.BG_PRIMARY);
+        cardPanel.setBackground(UIConstants.BG_MAIN);
 
         // Initialise panels
         initPanels();

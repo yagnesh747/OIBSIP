@@ -47,7 +47,7 @@ public class SwingGameFrame extends JFrame {
         headerCard.setLayout(new GridLayout(2, 1, 0, 4));
         JLabel title = new JLabel("🎯 Number Guessing Game", SwingConstants.CENTER);
         title.setFont(UIConstants.FONT_TITLE);
-        title.setForeground(UIConstants.TEXT_MAIN);
+        title.setForeground(UIConstants.PRIMARY_GREEN);
 
         JLabel subtitle = new JLabel("Oasis Infobyte Java Internship Project", SwingConstants.CENTER);
         subtitle.setFont(UIConstants.FONT_BODY);
@@ -71,7 +71,7 @@ public class SwingGameFrame extends JFrame {
         difficultyCombo = new JComboBox<>(DifficultyLevel.values());
         difficultyCombo.setFont(UIConstants.FONT_BODY);
 
-        JButton startBtn = UIConstants.createButton("Start New Game", UIConstants.ACCENT_GREEN);
+        JButton startBtn = UIConstants.createButton("Start New Game", UIConstants.PRIMARY_GREEN);
         startBtn.addActionListener(e -> startNewRound());
 
         diffRow.add(diffLabel);
@@ -84,7 +84,7 @@ public class SwingGameFrame extends JFrame {
         // Feedback Display Card
         feedbackLabel = new JLabel("Click 'Start New Game' to begin!", SwingConstants.CENTER);
         feedbackLabel.setFont(UIConstants.FONT_HEADING);
-        feedbackLabel.setForeground(UIConstants.ACCENT_BLUE);
+        feedbackLabel.setForeground(UIConstants.SECONDARY_GREEN);
         feedbackLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerCard.add(feedbackLabel);
 
@@ -94,7 +94,7 @@ public class SwingGameFrame extends JFrame {
         attemptsProgress = new JProgressBar(0, 10);
         attemptsProgress.setValue(10);
         attemptsProgress.setStringPainted(true);
-        attemptsProgress.setForeground(UIConstants.ACCENT_BLUE);
+        attemptsProgress.setForeground(UIConstants.PRIMARY_GREEN);
         centerCard.add(attemptsProgress);
 
         centerCard.add(Box.createVerticalStrut(15));
@@ -105,7 +105,7 @@ public class SwingGameFrame extends JFrame {
         guessInput = UIConstants.createTextField();
         guessInput.setPreferredSize(new Dimension(120, 40));
 
-        JButton submitBtn = UIConstants.createButton("Guess", UIConstants.ACCENT_BLUE);
+        JButton submitBtn = UIConstants.createButton("Guess", UIConstants.ACCENT_ORANGE);
         submitBtn.addActionListener(e -> handleGuess());
 
         inputRow.add(guessInput);
@@ -143,9 +143,9 @@ public class SwingGameFrame extends JFrame {
 
         scoreLabel = new JLabel("Score: 0 pts", SwingConstants.CENTER);
         scoreLabel.setFont(UIConstants.FONT_BOLD);
-        scoreLabel.setForeground(UIConstants.ACCENT_YELLOW);
+        scoreLabel.setForeground(UIConstants.ACCENT_ORANGE);
 
-        JButton statsBtn = UIConstants.createButton("View Stats", UIConstants.ACCENT_BLUE);
+        JButton statsBtn = UIConstants.createButton("View Stats", UIConstants.PRIMARY_GREEN);
         statsBtn.addActionListener(e -> showStatsDialog());
 
         footerCard.add(attemptsLabel);
@@ -165,7 +165,7 @@ public class SwingGameFrame extends JFrame {
         attemptsProgress.setString(diff.getMaxAttempts() + " attempts remaining");
 
         feedbackLabel.setText("Guess a number between " + diff.getMinRange() + " and " + diff.getMaxRange());
-        feedbackLabel.setForeground(UIConstants.ACCENT_BLUE);
+        feedbackLabel.setForeground(UIConstants.PRIMARY_GREEN);
         attemptsLabel.setText("Attempts: 0/" + diff.getMaxAttempts());
 
         historyListModel.clear();

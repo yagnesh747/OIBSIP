@@ -20,7 +20,7 @@ public class DashboardPanel extends JPanel {
 
     public DashboardPanel(ATMFrame parentFrame) {
         this.parentFrame = parentFrame;
-        setBackground(UIConstants.BG_PRIMARY);
+        setBackground(UIConstants.BG_MAIN);
         setLayout(new BorderLayout(0, 20));
 
         // Header Panel
