@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game — Oasis Infobyte Task 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
+        body {
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%);
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .card {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        h1 { font-size: 1.8rem; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p { color: #94a3b8; font-size: 0.9rem; margin-top: 4px; }
+        .diff-select { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
+        .diff-btn { flex: 1; padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; cursor: pointer; font-weight: 600; }
+        .diff-btn.active { background: #3b82f6; border-color: #60a5fa; }
+        .input-group { margin: 20px 0; }
+        input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: #090d16; color: white; font-size: 1.2rem; text-align: center; outline: none; }
+        .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: linear-gradient(135deg, #10b981, #059669); color: white; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .feedback { margin: 20px 0; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); font-weight: 600; min-height: 50px; }
+        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; font-size: 0.85rem; color: #94a3b8; text-align: left; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>🎯 Number Guessing Game</h1>
+    <p>Oasis Infobyte Java Internship — Task 2</p>
+
+    <div class="diff-select">
+        <button class="diff-btn active" onclick="setDiff('EASY')">Easy (1-50)</button>
+        <button class="diff-btn" onclick="setDiff('MEDIUM')">Medium (1-100)</button>
+        <button class="diff-btn" onclick="setDiff('HARD')">Hard (1-200)</button>
+    </div>
+
+    <div class="feedback" id="feedback">Click 'Start Game' to begin guessing!</div>
+
+    <div class="input-group">
+        <input type="number" id="guess" placeholder="Enter your guess">
+        <button class="btn" onclick="makeGuess()">Submit Guess</button>
+        <button class="btn" style="background: rgba(255,255,255,0.1);" onclick="newGame()">New Game</button>
+    </div>
+
+    <div class="stats">
+        <div>Played: <strong id="s-played" style="color:white">0</strong></div>
+        <div>Won: <strong id="s-won" style="color:#10b981">0</strong></div>
+        <div>High Score: <strong id="s-high" style="color:#f59e0b">0 pts</strong></div>
+        <div>Attempts Left: <strong id="s-left" style="color:#60a5fa">0</strong></div>
+    </div>
+</div>
+
+<script>
+    const diffs = { EASY: { min: 1, max: 50, att: 10, mult: 1.0 }, MEDIUM: { min: 1, max: 100, att: 7, mult: 1.5 }, HARD: { min: 1, max: 200, att: 5, mult: 2.5 } };
+    let curDiff = 'EASY', target = 0, remaining = 0, played = 0, won = 0, highScore = 0, active = false;
+
+    function setDiff(d) {
+        curDiff = d;
+        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        newGame();
+    }
+
+    function newGame() {
+        const cfg = diffs[curDiff];
+        target = Math.floor(Math.random() * (cfg.max - cfg.min + 1)) + cfg.min;
+        remaining = cfg.att;
+        active = true;
+        document.getElementById('feedback').innerText = `Guess a number between ${cfg.min} and ${cfg.max}`;
+        document.getElementById('feedback').style.color = '#f8fafc';
+        document.getElementById('s-left').innerText = remaining;
+    }
+
+    function makeGuess() {
+        if (!active) return newGame();
+        const g = parseInt(document.getElementById('guess').value);
+        const cfg = diffs[curDiff];
+        if (isNaN(g) || g < cfg.min || g > cfg.max) return alert(`Enter a number between ${cfg.min} and ${cfg.max}`);
+
+        remaining--;
+        document.getElementById('s-left').innerText = remaining;
+
+        if (g === target) {
+            active = false; played++; won++;
+            const score = Math.round((500 + remaining * 100) * cfg.mult);
+            if (score > highScore) highScore = score;
+            document.getElementById('feedback').innerText = `🏆 BINGO! Correct Number! Score: ${score} pts`;
+            document.getElementById('feedback').style.color = '#10b981';
+        } else if (remaining <= 0) {
+            active = false; played++;
+            document.getElementById('feedback').innerText = `❌ Game Over! The number was ${target}`;
+            document.getElementById('feedback').style.color = '#ef4444';
+        } else {
+            const hint = g > target ? 'Too High! Try Lower' : 'Too Low! Try Higher';
+            document.getElementById('feedback').innerText = `${hint} (${remaining} attempts left)`;
+            document.getElementById('feedback').style.color = '#f59e0b';
+        }
+
+        document.getElementById('s-played').innerText = played;
+        document.getElementById('s-won').innerText = won;
+        document.getElementById('s-high').innerText = highScore + ' pts';
+        document.getElementById('guess').value = '';
+    }
+    newGame();
+</script>
+</body>
+</html>
